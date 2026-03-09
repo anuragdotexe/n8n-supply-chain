@@ -1,0 +1,368 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "labelIds": [],
+          "q": "subject: daily sales"
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        -80
+      ],
+      "id": "577eafd3-a843-43dc-ad3c-28d9f41946c4",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "eiQbMekU2KrLoZ4P",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "fact_aggregate",
+          "mode": "list",
+          "cachedResultName": "fact_aggregate"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "order_id": "={{ $json.order_id }}",
+            "customer_id": "={{ $json.customer_id }}",
+            "order_placement_date": "={{ $json.order_placement_date.toDateTime(\"dd-MM-yyyy\").format('yyyy-MM-dd')}}",
+            "on_time": "={{ $json.on_time }}",
+            "in_full": "={{ $json.in_full }}",
+            "otif": "={{ $json.otif }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "order_id",
+              "displayName": "order_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "customer_id",
+              "displayName": "customer_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "order_placement_date",
+              "displayName": "order_placement_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "on_time",
+              "displayName": "on_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "in_full",
+              "displayName": "in_full",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "otif",
+              "displayName": "otif",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        96,
+        -80
+      ],
+      "id": "74bf36f6-ebc6-4080-9f73-aeb1c27db071",
+      "name": "postgre",
+      "credentials": {
+        "postgres": {
+          "id": "SlAIxCPjKt6jQNOz",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "attachment_0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        -80
+      ],
+      "id": "b4746913-15b6-4ea5-8744-f8d8a83704d9",
+      "name": "Extract from File: aggregrate"
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "attachment_1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        160
+      ],
+      "id": "efa3072b-c53b-4b06-bee3-43debfc132b1",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "fact_order_line",
+          "mode": "list",
+          "cachedResultName": "fact_order_line"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "order_id": "={{ $json.order_id }}",
+            "order_placement_date": "={{ $json.order_placement_date.toDateTime(\"dd-MM-yyyy\") .format('yyyy-MM-dd') }}",
+            "customer_id": "={{ $json.customer_id }}",
+            "product_id": "={{ $json.product_id }}",
+            "agreed_delivery_date": "={{ $json.agreed_delivery_date }}",
+            "order_qty": "={{ $json.order_qty }}",
+            "actual_delivery_date": "={{ $json.actual_delivery_date }}",
+            "delivery_qty": "={{ $json.delivery_qty }}",
+            "In Full": "={{ $json['In Full'] }}",
+            "On Time": "={{ $json['On Time'] }}",
+            "On Time In Full": "={{ $json['On Time In Full'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "order_id",
+              "displayName": "order_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "order_placement_date",
+              "displayName": "order_placement_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "customer_id",
+              "displayName": "customer_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "product_id",
+              "displayName": "product_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "order_qty",
+              "displayName": "order_qty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agreed_delivery_date",
+              "displayName": "agreed_delivery_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "actual_delivery_date",
+              "displayName": "actual_delivery_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "delivery_qty",
+              "displayName": "delivery_qty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "In Full",
+              "displayName": "In Full",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "On Time",
+              "displayName": "On Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "On Time In Full",
+              "displayName": "On Time In Full",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        64,
+        160
+      ],
+      "id": "c1b09095-91bd-437a-984c-88516789b0ac",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "SlAIxCPjKt6jQNOz",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract from File: aggregrate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File: aggregrate": {
+      "main": [
+        [
+          {
+            "node": "postgre",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2de3fb1d-ea67-4129-8452-16dbee2120c3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "92b68fe9b0f7ce12ff6484456e5b5d9a1fbc3b0ff2acebf086a5632f1fcb4f19"
+  },
+  "id": "TH9bSQ34T5Q9Dohe",
+  "tags": []
+}
