@@ -74,3 +74,5 @@ The pipeline expects the following structure in your **Supabase/Postgres** insta
 * **Zero Latency:** Data is available in the database within 60 seconds of an email arriving.
 * **Accuracy:** Eliminates date-formatting errors through automated parsing logic.
 * **Scalability:** Built to handle multiple attachments in a single execution.
+
+keep improving
