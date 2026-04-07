@@ -75,4 +75,4 @@ The pipeline expects the following structure in your **Supabase/Postgres** insta
 * **Accuracy:** Eliminates date-formatting errors through automated parsing logic.
 * **Scalability:** Built to handle multiple attachments in a single execution.
 
-keep improving
+thank-you 
