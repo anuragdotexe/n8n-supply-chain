@@ -1,5 +1,5 @@
 
-# 🧠 Supply Chain OTIF Automation (n8n + Supabase)
+# 🧠 Supply Chain OTIF Automation  (n8n + Supabase)
 
 This repository contains the **n8n workflow blueprint** for an automated supply chain data pipeline. The system monitors incoming sales reports via Gmail, parses multiple CSV attachments simultaneously, and synchronizes the data with a PostgreSQL (Supabase) database for real-time analysis.
 
